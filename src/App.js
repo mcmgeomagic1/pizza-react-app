@@ -61,7 +61,7 @@ function Menu() {
     <main className="menu">
       <h2>Our Menu</h2>
 
-      {numPizzas > 0 && (
+      {numPizzas > 0 ? (
         <>
           <p>
             Authentic Italian cuisine. 6 creative dishes to choose from. All
@@ -73,6 +73,8 @@ function Menu() {
             ))}
           </ul>
         </>
+      ) : (
+        <p>We're still working on our menu. Please come back later :)</p>
       )}
 
       {/* <Pizza
@@ -94,6 +96,8 @@ function Menu() {
 }
 
 const Pizza = ({ pizzaObj }) => {
+  if (pizzaObj.soldOut) return null;
+
   return (
     <li className="pizza">
       <img src={pizzaObj.photoName} alt="piza" />
@@ -109,25 +113,30 @@ const Pizza = ({ pizzaObj }) => {
 
 function Footer() {
   const hour = new Date().getHours();
-  const openHour = 12;
+  const openHour = 10;
   const closingHour = 22;
   const isOpen = hour >= openHour && hour <= closingHour;
 
   console.log(isOpen);
   return (
     <footer className="footer">
-      {isOpen && (
-        <div className="order">
-          <p>
-            We're open until {closingHour}:00. Come visit us or order online
-          </p>
-          <button className="btn">Order</button>
-        </div>
-      )}
-      {!isOpen && (
-        <p>We're open ultin {closingHour}:00. Come visit us or order online</p>
+      {isOpen ? (
+        <Order closingHour={closingHour} />
+      ) : (
+        <p>
+          We're happy to welcome you between {openHour}:00 and {closingHour}:00
+        </p>
       )}
     </footer>
+  );
+}
+
+function Order({ closingHour }) {
+  return (
+    <div className="order">
+      <p>We're open until {closingHour}:00. Come visit us or order online</p>
+      <button className="btn">Order</button>
+    </div>
   );
 }
 
